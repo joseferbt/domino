@@ -3,6 +3,12 @@
  */
 package juegoDomino;
 
+import java.awt.EventQueue;
+
+import javax.swing.UIManager;
+
+
+
 /**
  * @author Usser
  *
@@ -14,15 +20,17 @@ public class PrincipalDomino {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		FichasDomino asd = new FichasDomino();
+		
+		  try { 
+			  String className = UIManager.getCrossPlatformLookAndFeelClassName();
+			  UIManager.setLookAndFeel(className); 
+			  } 
+		  catch (Exception e) {}
+		  
+		  EventQueue.invokeLater(new Runnable() {public void run() { GuiDomino myWindow =
+		  new GuiDomino(); }});
+
+	}
 	
-		//asd.obtener();
-		for(int i =0;i<28;i++) {
-			System.out.println(asd.getarray(i));
-			}
-	}
-	String caminos(int[][] variable) {
-		return "a";
-	}
 
 }

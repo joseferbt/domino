@@ -19,6 +19,7 @@ import javax.swing.JLabel;
  *
  */
 public class FichasDomino extends JLabel{
+	private static final ImageIcon defecto = new ImageIcon("src/imagenes/ficha.jpg");
 	private int posicionX;
 	private int posicionY;
 	private int valorUno;
@@ -29,9 +30,7 @@ public class FichasDomino extends JLabel{
 	
 
 	public FichasDomino(int valorUno,int valorDos,ImageIcon imagen) {
-		/*
-		 * this.posicionX=posicionX; this.posicionY=posicionY;
-		 */
+
 	this.valorUno=valorUno;
 	this.valorDos=valorDos;
 	this.valorFicha = valorUno+valorDos;
@@ -39,26 +38,13 @@ public class FichasDomino extends JLabel{
 	this.setIcon(imagen);
 	setBackground(Color.black);
 	}
-/*	
-public class FichasDomino extends JLabel{
-	//private int[] ficha;
-	private int[][] fichas;
-	//private ArrayList<int[]>  fichas;
-	private Random aleatorio;
-
-	public FichasDomino(int x ,int y, int val1,int val2) {
-	//	ficha =new int[2];
-		fichas = new int[28][2];
-		aleatorio = new Random();
-		//fichas = new ArrayList<int[]>(28);
-		obtener();
-	}*/
-	
 
 	
-	public void revolver() {
-		
+	public void setImage(ImageIcon imagen) {
+		this.setIcon(imagen);
 	}
+	
+	
 	
 	
 }

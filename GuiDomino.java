@@ -3,11 +3,14 @@
  */
 package juegoDomino;
 
-import java.awt.BorderLayout;
+
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+
+import javax.swing.JPanel;
 
 /**
  * @author Usser
@@ -16,13 +19,13 @@ import javax.swing.JLabel;
 public class GuiDomino extends JFrame {
 	private BolsaFichas bolsaFichas;
 	private FichasDomino fichaDomino;
-	private JLabel jlabel;
+	private JPanel fichasJugador,fichasComputador,fichasJuego,estadoDelJuego;
 	
 	public GuiDomino() {
 	
 		initGui();
 		
-		setSize(1000,500);
+		setSize(500,500);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -31,16 +34,16 @@ public class GuiDomino extends JFrame {
 	}
 	
 	public void initGui() {
+		// container y layout
+		this.getContentPane().setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
 		
-		this.getContentPane().setLayout(new FlowLayout());
 		bolsaFichas = new BolsaFichas();
 		
 		//add(jlabel);
 		//add(bolsaFichas.getBolsaFichas().get(0));
-		for(int i=0;i<5;i++ ) {
+		for(int i=0;i<28;i++ ) {
 			add(bolsaFichas.getBolsaFichas().get(i));	
-			jlabel = new JLabel("puta");
-		add(jlabel,BorderLayout.SOUTH);
-	}
+			}
 		}
-}
+	}

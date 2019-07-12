@@ -35,14 +35,15 @@ public class GuiDomino extends JFrame {
 	
 	public void initGui() {
 		// container y layout
-		this.getContentPane().setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
+		this.getContentPane().setLayout(new FlowLayout());
+		//this.getContentPane().setLayout(new GridBagLayout());
+		//GridBagConstraints constraints = new GridBagConstraints();
 		
 		bolsaFichas = new BolsaFichas();
 		
 		//add(jlabel);
 		//add(bolsaFichas.getBolsaFichas().get(0));
-		for(int i=0;i<28;i++ ) {
+		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
 			add(bolsaFichas.getBolsaFichas().get(i));	
 			}
 		}

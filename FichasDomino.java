@@ -29,12 +29,12 @@ public class FichasDomino extends JLabel{
 	
 	
 
-	public FichasDomino(int valorUno,int valorDos,ImageIcon imagen) {
+	public FichasDomino(int valorUno,int valorDos) {
 
 	this.valorUno=valorUno;
 	this.valorDos=valorDos;
 	this.valorFicha = valorUno+valorDos;
-	this.imagen = imagen;
+	this.imagen = new ImageIcon("src/imagenes/"+valorUno+"-"+valorDos+".jpg");
 	this.setIcon(imagen);
 	setBackground(Color.black);
 	}

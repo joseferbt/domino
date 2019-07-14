@@ -44,6 +44,16 @@ public class FichasDomino extends JLabel{
 		this.setIcon(imagen);
 	}
 	
+	public ImageIcon getDefecto() {
+		return defecto;
+		
+	}
+	
+	public ImageIcon getImagen() {
+		return imagen;
+		
+	}
+	
 	
 	
 	

@@ -4,12 +4,13 @@
 package juegoDomino;
 
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
-
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -17,34 +18,42 @@ import javax.swing.JPanel;
  *
  */
 public class GuiDomino extends JFrame {
-	private BolsaFichas bolsaFichas;
-	private FichasDomino fichaDomino;
-	private JPanel fichasJugador,fichasComputador,fichasJuego,estadoDelJuego;
+	private ControlDomino controlDomino;
+	private String mensaje;
+
 	
 	public GuiDomino() {
 	
 		initGui();
 		
-		setSize(500,500);
+		setSize(1000,700);
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	
 	public void initGui() {
+		mensaje="Escoge una ficha para determinar quien inicia el juego";
 		// container y layout
-		this.getContentPane().setLayout(new FlowLayout());
+		//this.getContentPane().setLayout(new FlowLayout());
 		//this.getContentPane().setLayout(new GridBagLayout());
 		//GridBagConstraints constraints = new GridBagConstraints();
-		
-		bolsaFichas = new BolsaFichas();
-		
-		//add(jlabel);
-		//add(bolsaFichas.getBolsaFichas().get(0));
-		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
-			add(bolsaFichas.getBolsaFichas().get(i));	
-			}
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
+	controlDomino = new ControlDomino();
+	for(int i=0;i<controlDomino.getArrayFichas().size();i++ ) {
+		panel.add(controlDomino.getArrayFichas().get(i));	
 		}
+	add(panel,BorderLayout.CENTER);
+	
+	add(controlDomino.getJugador(),BorderLayout.SOUTH);
+	add(controlDomino.getMaquina(),BorderLayout.NORTH);
+	add(controlDomino,BorderLayout.EAST);
+	JOptionPane.showMessageDialog(null,mensaje);
+		}
+	
+	
+	
 	}

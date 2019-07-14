@@ -35,7 +35,7 @@ public class FichasDomino extends JLabel{
 	this.valorDos=valorDos;
 	this.valorFicha = valorUno+valorDos;
 	this.imagen = new ImageIcon("src/imagenes/"+valorUno+"-"+valorDos+".jpg");
-	this.setIcon(imagen);
+	this.setIcon(defecto);
 	setBackground(Color.black);
 	}
 

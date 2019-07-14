@@ -3,6 +3,7 @@
  */
 package juegoDomino;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 /**
  * @author Usser
@@ -33,7 +35,6 @@ public class BolsaFichas {
 		aleatorio = new Random();
 		bolsaFichas= new ArrayList<FichasDomino>(28);  
 		obtener();
-		
 	}
 	
 	public  void obtener() {

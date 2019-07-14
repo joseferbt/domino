@@ -3,14 +3,18 @@
  */
 package juegoDomino;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -18,21 +22,62 @@ import javax.swing.JPanel;
  *
  */
 public class ControlDomino extends JPanel {
+	private final Color fondo = new Color(158,59,32);
 	private int juega ;
 	private Random aleatorio;
 	private BolsaFichas bolsaFichas;
 	private UsuarioDomino jugador;
 	private CrupierDomino maquina;
 	private Escuchas escucha;
+	private JPanel panelControl,panelFichas,panelCrupier,panelUsuario;
 	
 	public ControlDomino() {
-		bolsaFichas= new BolsaFichas();
-		jugador = new UsuarioDomino(100);
-		maquina = new CrupierDomino(1000);
-		setPreferredSize(new Dimension(250,200));
-		setBackground(Color.blue);
+		
+		initGui();
+		
+		setPreferredSize(new Dimension(1000,700));
+		
 	}
 	
+	public void initGui() {
+		escucha = new Escuchas();
+		
+		this.setLayout(new BorderLayout());
+		maquina = new CrupierDomino(1000);
+		panelCrupier = new JPanel();
+		panelCrupier.setBackground(fondo);
+		panelCrupier.setPreferredSize(new Dimension(750,120));
+		add(panelCrupier,BorderLayout.NORTH);
+		
+		bolsaFichas= new BolsaFichas();
+		panelFichas = new JPanel();
+		//panelFichas.setLayout();
+		panelFichas.setBackground(Color.LIGHT_GRAY);
+		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
+			bolsaFichas.getBolsaFichas().get(i).addMouseListener(escucha);
+			panelFichas.add(bolsaFichas.getBolsaFichas().get(i));	
+		}
+		add(panelFichas,BorderLayout.CENTER);
+		jugador = new UsuarioDomino(100);
+		panelUsuario = new JPanel();
+		panelUsuario.setBackground(fondo);
+		panelUsuario.setPreferredSize(new Dimension(750,120));
+		add(panelUsuario,BorderLayout.SOUTH);
+		
+		panelControl = new JPanel();
+		panelControl.setPreferredSize(new Dimension(200,500));
+		panelControl.setBackground(new Color(158,59,32));
+		add(panelControl,BorderLayout.EAST);
+		
+		
+	}
+
+
+protected void initGuia() {
+	for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
+		add(bolsaFichas.getBolsaFichas().get(i));	
+		}
+}
 	
 	public boolean gano() {
 		return false;
@@ -85,8 +130,13 @@ public class ControlDomino extends JPanel {
 	private class Escuchas implements MouseListener{
 
 		@Override
-		public void mouseClicked(MouseEvent arg0) {
+		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
+			
+			FichasDomino origen= (FichasDomino) e.getSource();
+			origen.setImage(origen.getImagen());
+			
+		
 			
 		}
 

@@ -3,6 +3,7 @@
  */
 package juegoDomino;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -19,11 +20,6 @@ public class CrupierDomino extends UsuarioDomino {
 		
 	}
 	
-	protected void initGui() {
-		for(int i=0;i<fichas.size();i++ ) {
-			fichas.get(i).setImage(fichas.get(i).getDefecto());
-			add(fichas.get(i));	
-			}
-	}
+	
 
 }

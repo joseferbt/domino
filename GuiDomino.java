@@ -3,13 +3,16 @@
  */
 package juegoDomino;
 
-
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -20,40 +23,64 @@ import javax.swing.JPanel;
 public class GuiDomino extends JFrame {
 	private ControlDomino controlDomino;
 	private String mensaje;
+	private JButton jugar;
+	private Escucha escucha;
+	private JPanel panelBoton, panelFichas;
+	private JLabel titulo;
 
-	
 	public GuiDomino() {
-	
 		initGui();
-		
 		setSize(1000,700);
-		this.setResizable(true);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		setTitle("Domino");
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
 	public void initGui() {
-		mensaje="Escoge una ficha para determinar quien inicia el juego";
-		// container y layout
-		//this.getContentPane().setLayout(new FlowLayout());
-		//this.getContentPane().setLayout(new GridBagLayout());
-		//GridBagConstraints constraints = new GridBagConstraints();
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-	controlDomino = new ControlDomino();
-	for(int i=0;i<controlDomino.getArrayFichas().size();i++ ) {
-		panel.add(controlDomino.getArrayFichas().get(i));	
-		}
-	add(panel,BorderLayout.CENTER);
-	
-	add(controlDomino.getJugador(),BorderLayout.SOUTH);
-	add(controlDomino.getMaquina(),BorderLayout.NORTH);
-	add(controlDomino,BorderLayout.EAST);
-	JOptionPane.showMessageDialog(null,mensaje);
-		}
-	
-	
-	
+		
+		//escucha
+		escucha = new Escucha();
+		
+		// control
+		controlDomino = new ControlDomino();
+		init();
+		// objetos
+		/*
+		titulo = new JLabel(new ImageIcon("src/imagenes/Titulo.png"));
+		add(titulo,BorderLayout.NORTH);
+		
+		panelBoton = new JPanel();
+		jugar = new JButton("jugar");
+		jugar.addActionListener(escucha);
+		panelBoton.add(jugar);
+		add(panelBoton);
+		*/
+		
 	}
+	
+	public void init() {
+	
+		mensaje="Escoge una ficha para determinar quien inicia el juego";
+		panelFichas = new JPanel();
+		panelFichas.setLayout(new FlowLayout());
+		controlDomino = new ControlDomino();
+		add(controlDomino);
+	}
+	
+	private class Escucha implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			titulo.setVisible(false);
+			panelBoton.setVisible(false);
+			panelFichas.setVisible(true);
+			controlDomino.setVisible(true);
+		//	controlDomino.getJugador().setVisible(true);
+		//	controlDomino.getMaquina().setVisible(true);
+		}
+		
+	}
+	
+	
+}

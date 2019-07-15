@@ -53,7 +53,7 @@ public class ControlDomino extends JPanel {
 		
 		bolsaFichas= new BolsaFichas();
 		panelFichas = new JPanel();
-		panelFichas.setLayout(new GridLayout(8,7));
+		//panelFichas.setLayout(new GridLayout(2,14));
 		panelFichas.setBackground(Color.LIGHT_GRAY);
 		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
 			bolsaFichas.getBolsaFichas().get(i).addMouseListener(escucha);

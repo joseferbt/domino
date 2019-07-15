@@ -9,12 +9,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -49,8 +51,7 @@ public class ControlDomino extends JPanel {
 		crupierDomino = new CrupierDomino(1000);
 		panelCrupier = new JPanel();
 		panelCrupier.setBackground(fondo);
-		panelCrupier.setLayout(new BorderLayout());
-		panelCrupier.setPreferredSize(new Dimension(1000,100));
+		panelCrupier.setPreferredSize(new Dimension(1000,180));
 		add(panelCrupier,BorderLayout.NORTH);
 		
 		bolsaFichas= new BolsaFichas();
@@ -64,7 +65,7 @@ public class ControlDomino extends JPanel {
 		add(panelFichas,BorderLayout.CENTER);
 		usuarioDomino = new UsuarioDomino(100);
 		panelUsuario = new JPanel();
-		panelUsuario.setLayout(new FlowLayout());
+		panelUsuario.setLayout(new BorderLayout());
 		panelUsuario.setBackground(fondo);
 		panelUsuario.setPreferredSize(new Dimension(1000,120));
 		add(panelUsuario,BorderLayout.SOUTH);
@@ -95,8 +96,9 @@ protected void initGuia() {
 	public ArrayList<FichasDomino> repartir() {
 		ArrayList<FichasDomino> fichas =new ArrayList<FichasDomino>();
 		for(int i=0;i<7;i++) {
-			FichasDomino aux = getArrayFichas().get(i);
-			getArrayFichas().remove(i);
+			int ran = aleatorio.nextInt(getArrayFichas().size());
+			FichasDomino aux = getArrayFichas().get(ran);
+			getArrayFichas().remove(ran);
 			fichas.add(aux);
 		}
 		return fichas;
@@ -107,25 +109,15 @@ protected void initGuia() {
 		return null;
 	}
 
-	
-	private void casoDos(){
-		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
-			panelFichas.remove(bolsaFichas.getBolsaFichas().get(i));
-			}	
-		usuarioDomino.setFichas(repartir());
-		crupierDomino.setFichas(repartir());
-		panelFichas.setBackground(Color.pink);
-		}
-	
 	class Escuchas implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			// selecion de fichas
 			FichasDomino fichaUsuario= (FichasDomino) e.getSource();
 			fichaUsuario.setImage(fichaUsuario.getImagen());
-			bolsaFichas.getBolsaFichas().get(bolsaFichas.getBolsaFichas().indexOf(fichaUsuario));
+			bolsaFichas.getBolsaFichas().remove(bolsaFichas.getBolsaFichas().indexOf(fichaUsuario));
 			FichasDomino fichaCrupier = bolsaFichas.getBolsaFichas().get(aleatorio.nextInt(bolsaFichas.getBolsaFichas().size()));
 			fichaCrupier.setImage(fichaCrupier.getImagen());
 			for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
@@ -145,13 +137,17 @@ protected void initGuia() {
 					panelFichas.setBackground(Color.yellow);}
 			usuarioDomino.setFichas(repartir());
 			crupierDomino.setFichas(repartir());
-			panelUsuario.setBackground(Color.lightGray);
-			panelCrupier.setBackground(Color.lightGray);
+			
 			for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
 				 usuarioDomino.getFichas().get(i).setImage( usuarioDomino.getFichas().get(i).getImagen());
-				 panelUsuario.add(usuarioDomino.getFichas().get(i));
+				 panelUsuario.add(usuarioDomino.getFichas().get(i),BorderLayout.NORTH);
+				
 				 panelCrupier.add(crupierDomino.getFichas().get(i));
 			}
+			JButton pasar = new JButton("pasar");
+			 panelUsuario.add(pasar);
+			panelUsuario.setBackground(Color.lightGray);
+			panelCrupier.setBackground(Color.lightGray);
 			
 		}
 

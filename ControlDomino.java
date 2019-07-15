@@ -6,6 +6,8 @@ package juegoDomino;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +32,7 @@ public class ControlDomino extends JPanel {
 	private UsuarioDomino usuarioDomino;
 	private CrupierDomino crupierDomino;
 	private Escuchas escucha;
+	private EscuchaFichas escuchaFichas;
 	private JPanel panelControl,panelFichas,panelCrupier,panelUsuario;
 	
 	public ControlDomino() {
@@ -43,6 +46,7 @@ public class ControlDomino extends JPanel {
 	public void initGui() {
 		aleatorio = new Random();
 		escucha = new Escuchas();
+		escuchaFichas = new EscuchaFichas();
 		
 		this.setLayout(new BorderLayout());
 		crupierDomino = new CrupierDomino(1000);
@@ -53,12 +57,19 @@ public class ControlDomino extends JPanel {
 		
 		bolsaFichas= new BolsaFichas();
 		panelFichas = new JPanel();
-		//panelFichas.setLayout(new GridLayout(2,14));
+		panelFichas.setLayout(new GridBagLayout());
+		GridBagConstraints posiciones = new GridBagConstraints();
 		panelFichas.setBackground(Color.LIGHT_GRAY);
-		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
-			bolsaFichas.getBolsaFichas().get(i).addMouseListener(escucha);
-			panelFichas.add(bolsaFichas.getBolsaFichas().get(i));	
-		}
+		int contador=0;		
+		for(int i=0;i<bolsaFichas.getBolsaFichas().size()/4;i++ ) {
+			for (int j=0; j<getArrayFichas().size()/7;j++) {
+				bolsaFichas.getBolsaFichas().get(contador).addMouseListener(escucha);
+				posiciones.gridx=i;
+				posiciones.gridy=j;
+				panelFichas.add(bolsaFichas.getBolsaFichas().get(contador),posiciones);
+				contador++;
+				}
+			}
 		add(panelFichas,BorderLayout.CENTER);
 		usuarioDomino = new UsuarioDomino(100);
 		panelUsuario = new JPanel();
@@ -139,8 +150,6 @@ public class ControlDomino extends JPanel {
 				  juega=1;
 				  JOptionPane.showMessageDialog(null, "El valor de tu ficha es menor al de crupier");
 				  panelFichas.setBackground(Color.yellow);}
-			 
-			
 			for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
 				panelFichas.remove(bolsaFichas.getBolsaFichas().get(i));
 				}
@@ -156,10 +165,11 @@ public class ControlDomino extends JPanel {
 			
 			if(juega==0) {
 				for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
-					usuarioDomino.getFichas().get(i).setImage( usuarioDomino.getFichas().get(i).getImagen());
-					panelUsuario.add(usuarioDomino.getFichas().get(i));
+					usuarioDomino.getFichas().get(i).addMouseListener(escuchaFichas);
+					
 					 }
 			}else {
+				
 				
 			}
 						
@@ -206,7 +216,7 @@ public class ControlDomino extends JPanel {
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
-		}
+		} 
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {

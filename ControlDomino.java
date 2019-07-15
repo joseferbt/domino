@@ -16,7 +16,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -27,6 +29,7 @@ import javax.swing.JPanel;
 public class ControlDomino extends JPanel {
 	private final Color fondo = new Color(158,22,22);
 	private int juega ;
+	private int[] condicion;
 	private Random aleatorio;
 	private BolsaFichas bolsaFichas;
 	private UsuarioDomino usuarioDomino;
@@ -34,6 +37,7 @@ public class ControlDomino extends JPanel {
 	private Escuchas escucha;
 	private EscuchaFichas escuchaFichas;
 	private JPanel panelControl,panelFichas,panelCrupier,panelUsuario;
+	private FichasDomino plantilla;
 	
 	public ControlDomino() {
 		
@@ -47,6 +51,11 @@ public class ControlDomino extends JPanel {
 		aleatorio = new Random();
 		escucha = new Escuchas();
 		escuchaFichas = new EscuchaFichas();
+		condicion = new int [2];
+		
+		plantilla = new FichasDomino(21,20);
+		plantilla.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
+		plantilla.addMouseListener(escuchaFichas);
 		
 		this.setLayout(new BorderLayout());
 		crupierDomino = new CrupierDomino(1000);
@@ -129,7 +138,6 @@ public class ControlDomino extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			// selecion de fichas
-			
 			FichasDomino fichaUsuario= (FichasDomino) e.getSource();
 			fichaUsuario.setImage(fichaUsuario.getImagen());
 			bolsaFichas.getBolsaFichas().remove(bolsaFichas.getBolsaFichas().indexOf(fichaUsuario));
@@ -145,7 +153,8 @@ public class ControlDomino extends JPanel {
 			
 			  if(fichaUsuario.getValorFicha()>fichaCrupier.getValorFicha()) {
 				  juega=0;
-				  panelFichas.setBackground(Color.pink); JOptionPane.showMessageDialog(null, "El valor de tu ficha es mayor al de crupier"); }
+				  panelFichas.setBackground(Color.pink);
+				  JOptionPane.showMessageDialog(null, "El valor de tu ficha es mayor al de crupier"); }
 			  else {
 				  juega=1;
 				  JOptionPane.showMessageDialog(null, "El valor de tu ficha es menor al de crupier");
@@ -166,8 +175,12 @@ public class ControlDomino extends JPanel {
 			if(juega==0) {
 				for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
 					usuarioDomino.getFichas().get(i).addMouseListener(escuchaFichas);
-					
 					 }
+				GridBagConstraints posiciones = new GridBagConstraints();
+				posiciones.gridx=5;
+				posiciones.gridy=5;
+				panelFichas.add(plantilla,posiciones);
+				panelFichas.setBackground(Color.LIGHT_GRAY);
 			}else {
 				
 				
@@ -176,31 +189,31 @@ public class ControlDomino extends JPanel {
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent arg0) {
+		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mouseExited(MouseEvent arg0) {
+		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mousePressed(MouseEvent arg0) {
+		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent arg0) {
+		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(getArrayFichas().size()>0 && juega==0) {
 				usuarioDomino.getFichas().add(darFicha());
@@ -213,31 +226,34 @@ public class ControlDomino extends JPanel {
 	private class EscuchaFichas implements MouseListener{
 
 		@Override
-		public void mouseClicked(MouseEvent arg0) {
+		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		} 
 
 		@Override
-		public void mouseEntered(MouseEvent arg0) {
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getSource()== (FichasDomino)e.getSource()) {
+				System.out.print(true);
+			}
+			System.out.print(false);
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mouseExited(MouseEvent arg0) {
+		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
+		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
 		}

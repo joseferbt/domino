@@ -3,9 +3,6 @@
  */
 package juegoDomino;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 /**
  * @author Usser
  *

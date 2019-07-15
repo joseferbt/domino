@@ -3,11 +3,8 @@
  */
 package juegoDomino;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.util.ArrayList;
 
-import javax.swing.JPanel;
+import java.util.ArrayList;
 
 /**
  * @author Usser
@@ -20,8 +17,6 @@ public class UsuarioDomino  {
 	public UsuarioDomino(int dinero ){
 		this.dinero = dinero;
 		
-		
-	
 		
 	}
 	

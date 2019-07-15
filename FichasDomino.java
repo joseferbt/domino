@@ -54,6 +54,9 @@ public class FichasDomino extends JLabel{
 		
 	}
 	
+	public int getValorFicha() {
+		return valorFicha;
+	}
 	
 	
 	

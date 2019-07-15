@@ -44,7 +44,6 @@ public class GuiDomino extends JFrame {
 		// control
 		controlDomino = new ControlDomino();
 		init();
-		// objetos
 		/*
 		titulo = new JLabel(new ImageIcon("src/imagenes/Titulo.png"));
 		add(titulo,BorderLayout.NORTH);
@@ -61,9 +60,8 @@ public class GuiDomino extends JFrame {
 	public void init() {
 	
 		mensaje="Escoge una ficha para determinar quien inicia el juego";
-		panelFichas = new JPanel();
-		panelFichas.setLayout(new FlowLayout());
 		controlDomino = new ControlDomino();
+		//controlDomino.setVisible(false);
 		add(controlDomino);
 	}
 	
@@ -74,7 +72,7 @@ public class GuiDomino extends JFrame {
 			// TODO Auto-generated method stub
 			titulo.setVisible(false);
 			panelBoton.setVisible(false);
-			panelFichas.setVisible(true);
+		//	panelFichas.setVisible(true);
 			controlDomino.setVisible(true);
 		//	controlDomino.getJugador().setVisible(true);
 		//	controlDomino.getMaquina().setVisible(true);

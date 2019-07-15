@@ -25,7 +25,9 @@ public class UsuarioDomino  {
 		
 	}
 	
-	
+	public ArrayList<FichasDomino> getFichas(){
+		return fichas;
+	}
 	
 	public void setFichas(ArrayList<FichasDomino>  ficha) {
 		fichas= ficha;

@@ -6,6 +6,7 @@ package juegoDomino;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -26,8 +28,8 @@ public class ControlDomino extends JPanel {
 	private int juega ;
 	private Random aleatorio;
 	private BolsaFichas bolsaFichas;
-	private UsuarioDomino jugador;
-	private CrupierDomino maquina;
+	private UsuarioDomino usuarioDomino;
+	private CrupierDomino crupierDomino;
 	private Escuchas escucha;
 	private JPanel panelControl,panelFichas,panelCrupier,panelUsuario;
 	
@@ -40,13 +42,15 @@ public class ControlDomino extends JPanel {
 	}
 	
 	public void initGui() {
+		aleatorio = new Random();
 		escucha = new Escuchas();
 		
 		this.setLayout(new BorderLayout());
-		maquina = new CrupierDomino(1000);
+		crupierDomino = new CrupierDomino(1000);
 		panelCrupier = new JPanel();
 		panelCrupier.setBackground(fondo);
-		panelCrupier.setPreferredSize(new Dimension(750,120));
+		panelCrupier.setLayout(new BorderLayout());
+		panelCrupier.setPreferredSize(new Dimension(1000,100));
 		add(panelCrupier,BorderLayout.NORTH);
 		
 		bolsaFichas= new BolsaFichas();
@@ -58,10 +62,11 @@ public class ControlDomino extends JPanel {
 			panelFichas.add(bolsaFichas.getBolsaFichas().get(i));	
 		}
 		add(panelFichas,BorderLayout.CENTER);
-		jugador = new UsuarioDomino(100);
+		usuarioDomino = new UsuarioDomino(100);
 		panelUsuario = new JPanel();
+		panelUsuario.setLayout(new FlowLayout());
 		panelUsuario.setBackground(fondo);
-		panelUsuario.setPreferredSize(new Dimension(750,120));
+		panelUsuario.setPreferredSize(new Dimension(1000,120));
 		add(panelUsuario,BorderLayout.SOUTH);
 		
 		panelControl = new JPanel();
@@ -97,46 +102,56 @@ protected void initGuia() {
 		return fichas;
 	}
 	
+	public FichasDomino darficha() {
+		
+		return null;
+	}
+
 	
+	private void casoDos(){
+		for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
+			panelFichas.remove(bolsaFichas.getBolsaFichas().get(i));
+			}	
+		usuarioDomino.setFichas(repartir());
+		crupierDomino.setFichas(repartir());
+		panelFichas.setBackground(Color.pink);
+		}
 	
-	
-	public int getJuega() {
-		return juega;
-	}
-
-
-	public Random getAleatorio() {
-		return aleatorio;
-	}
-
-
-	public BolsaFichas getBolsaFichas() {
-		return bolsaFichas;
-	}
-
-
-	public UsuarioDomino getJugador() {
-		return jugador;
-	}
-
-
-	public CrupierDomino getMaquina() {
-		return maquina;
-	}
-
-
-
-
-	private class Escuchas implements MouseListener{
+	class Escuchas implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
-			FichasDomino origen= (FichasDomino) e.getSource();
-			origen.setImage(origen.getImagen());
-			
-		
+			FichasDomino fichaUsuario= (FichasDomino) e.getSource();
+			fichaUsuario.setImage(fichaUsuario.getImagen());
+			bolsaFichas.getBolsaFichas().get(bolsaFichas.getBolsaFichas().indexOf(fichaUsuario));
+			FichasDomino fichaCrupier = bolsaFichas.getBolsaFichas().get(aleatorio.nextInt(bolsaFichas.getBolsaFichas().size()));
+			fichaCrupier.setImage(fichaCrupier.getImagen());
+			for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
+				bolsaFichas.getBolsaFichas().get(i).removeMouseListener(escucha);
+				//panelFichas.remove(bolsaFichas.getBolsaFichas().get(i));	
+				}
+			for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
+				panelFichas.remove(bolsaFichas.getBolsaFichas().get(i));
+				}
+
+			panelFichas.add(fichaCrupier);
+			panelFichas.add(fichaUsuario);
+			if(fichaUsuario.getValorFicha()>fichaCrupier.getValorFicha()) {
+				panelFichas.setBackground(Color.pink);
+				JOptionPane.showMessageDialog(null, "El valor de tu ficha es mayor al de crupier");
+				}else {JOptionPane.showMessageDialog(null, "El valor de tu ficha es menor al de crupier");
+					panelFichas.setBackground(Color.yellow);}
+			usuarioDomino.setFichas(repartir());
+			crupierDomino.setFichas(repartir());
+			panelUsuario.setBackground(Color.lightGray);
+			panelCrupier.setBackground(Color.lightGray);
+			for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
+				 usuarioDomino.getFichas().get(i).setImage( usuarioDomino.getFichas().get(i).getImagen());
+				 panelUsuario.add(usuarioDomino.getFichas().get(i));
+				 panelCrupier.add(crupierDomino.getFichas().get(i));
+			}
 			
 		}
 

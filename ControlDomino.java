@@ -28,7 +28,7 @@ import javax.swing.JPanel;
  */
 public class ControlDomino extends JPanel {
 	private final Color fondo = new Color(158,22,22);
-	private int juega ;
+	private int juega, x1, y1,x2,y2;
 	private boolean cambio=false;
 	private int[] condicion;
 	private Random aleatorio;
@@ -39,7 +39,7 @@ public class ControlDomino extends JPanel {
 	private EscuchaFichas escuchaFichas;
 	private JPanel panelControl,panelFichas,panelCrupier,panelUsuario;
 	private FichasDomino plantilla1, plantilla2, fichaUsuario,fichaCrupier;
-	
+	private GridBagConstraints posiciones = new GridBagConstraints();
 	public ControlDomino() {
 		
 		initGui();
@@ -57,8 +57,11 @@ public class ControlDomino extends JPanel {
 		condicion[0]= -1;
 		
 		plantilla1 = new FichasDomino(21,20);
-		plantilla1.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
+		plantilla1.setIcon(new ImageIcon("src/imagenes/ficha.jpg"));
 		plantilla1.addMouseListener(escuchaFichas);
+		plantilla2 = new FichasDomino(21,20);
+		plantilla2.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
+		plantilla2.addMouseListener(escuchaFichas);
 		
 		this.setLayout(new BorderLayout());
 		crupierDomino = new CrupierDomino(1000);
@@ -179,13 +182,31 @@ public class ControlDomino extends JPanel {
 				for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
 					usuarioDomino.getFichas().get(i).addMouseListener(escuchaFichas);
 					 }
-				GridBagConstraints posiciones = new GridBagConstraints();
-				posiciones.gridx=5;
-				posiciones.gridy=5;
+				x1=5;
+				y1=5;
+				x2=5;
+				y2=5;
+				posiciones.gridx=x1;
+				posiciones.gridy=y1;
 				panelFichas.add(plantilla1,posiciones);
 				panelFichas.setBackground(Color.LIGHT_GRAY);
+				juega=1;
 			}else {
-				
+				int aux = aleatorio.nextInt(crupierDomino.getFichas().size());
+				fichaCrupier = crupierDomino.getFichas().get(aux);
+				fichaCrupier.setImage(fichaCrupier.getImagen());
+				posiciones.gridx=x1;
+				posiciones.gridy=y1;
+				condicion[0]=fichaCrupier.getValores()[0];
+				condicion[1]=fichaCrupier.getValores()[1];
+				panelFichas.add(fichaCrupier,posiciones);
+				posiciones.gridx=4;
+				posiciones.gridy=5;
+				panelFichas.add(plantilla2,posiciones);
+				posiciones.gridx=x1+1;
+				posiciones.gridy=y1;
+				panelFichas.add(plantilla1,posiciones);
+			
 				
 			}
 						
@@ -240,8 +261,8 @@ public class ControlDomino extends JPanel {
 			
 			if(cambio) {
 			plantilla1.setIcon(fichaUsuario.getImagen());
-			condicion[0]=fichaUsuario.valores()[0];
-			condicion[1]=fichaUsuario.valores()[1];
+			condicion[0]=fichaUsuario.getValores()[0];
+			condicion[1]=fichaUsuario.getValores()[1];
 			//System.out.print(usuarioDomino.getFichas().toString());
 			System.out.println(usuarioDomino.getFichas().size());
 			//pintarUsuario();
@@ -270,7 +291,7 @@ public class ControlDomino extends JPanel {
 					usuarioDomino.getFichas().get(i).removeMouseListener(escuchaFichas);
 					 }
 				System.out.println(usuarioDomino.getFichas().size());
-				}else if(condicion[0]== fichaUsuario.valores()[0]) {
+				}else if(condicion[0]== fichaUsuario.getValores()[0]) {
 					
 				}
 			

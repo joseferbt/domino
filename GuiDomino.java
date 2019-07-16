@@ -34,6 +34,7 @@ public class GuiDomino extends JFrame {
 		setTitle("Domino");
 		setLocationRelativeTo(null);
 		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void initGui() {

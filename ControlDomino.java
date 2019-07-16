@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -28,8 +29,8 @@ import javax.swing.JPanel;
  */
 public class ControlDomino extends JPanel {
 	private final Color fondo = new Color(158,22,22);
-	private int juega, x1, y1,x2,y2;
-	private boolean cambio=false;
+	private int juega, x1, y1,x2,y2,cualCondicion, contador;
+	private boolean cambio=false, cumple0,cumple1;
 	private int[] condicion;
 	private Random aleatorio;
 	private BolsaFichas bolsaFichas;
@@ -54,10 +55,10 @@ public class ControlDomino extends JPanel {
 		escuchaFichas = new EscuchaFichas();
 		condicion = new int [2];
 		condicion[1]=-1;
-		condicion[0]= -1;
+		condicion[0]=-1;
 		
 		plantilla1 = new FichasDomino(21,20);
-		plantilla1.setIcon(new ImageIcon("src/imagenes/ficha.jpg"));
+		plantilla1.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
 		plantilla1.addMouseListener(escuchaFichas);
 		plantilla2 = new FichasDomino(21,20);
 		plantilla2.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
@@ -99,6 +100,56 @@ public class ControlDomino extends JPanel {
 		
 		
 	}
+	
+	public void ponerFicha(int[] condicion) {
+		if(condicion[0]==-1) {
+			FichasDomino aux = crupierDomino.getFichas().get(aleatorio.nextInt(crupierDomino.getFichas().size()));
+			fichaCrupier= aux ;
+		}else {
+			for(int i=0;i<crupierDomino.getFichas().size();i++) {
+				FichasDomino aux = crupierDomino.getFichas().get(i);
+				for (int j=0;j<crupierDomino.getFichas().size();j++) {
+					if (condicion[i]==aux.getValores()[j]) {
+						fichaCrupier = aux;
+					}
+				}						
+			}
+		}
+}
+	
+	public void revisarCondicion(int[] valores) {
+		cumple0=false;
+		cumple1=false;
+		for(int i=0;i<condicion.length;i++) {
+			for(int j=0;j<condicion.length;j++) {
+				if (condicion[i]==valores[j]) {
+					if(i==0) {
+						cumple0=true;
+					}else {
+						cumple1=true;
+					}
+					cualCondicion=j;
+				}
+			}
+		}
+		
+	}
+	
+	public void setPlantilla() {
+		contador=0;
+		x1=5;y1=5;x2=5;y2=5;
+		for(int i=0;i<10;i++) {
+			for(int j=0;j<10;j++) {
+				if (panelFichas.getComponentAt(new Point(i,j))!= new JLabel()) {
+					x1=i;x2=i;
+					y1=j;y2=j;
+					}
+				}
+			}
+		posiciones.gridx=x1;
+		posiciones.gridy=y1;
+		}
+		
 
 
 	public void pintarUsuario() {
@@ -156,15 +207,14 @@ public class ControlDomino extends JPanel {
 				}
 			panelFichas.add(fichaCrupier);
 			panelFichas.add(fichaUsuario);
-			
-			  if(fichaUsuario.getValorFicha()>fichaCrupier.getValorFicha()) {
-				  juega=0;
-				  panelFichas.setBackground(Color.pink);
-				  JOptionPane.showMessageDialog(null, "El valor de tu ficha es mayor al de crupier"); }
-			  else {
-				  juega=1;
-				  JOptionPane.showMessageDialog(null, "El valor de tu ficha es menor al de crupier");
-				  panelFichas.setBackground(Color.yellow);}
+			if(fichaUsuario.getValorFicha()>fichaCrupier.getValorFicha()) {
+				juega=0;
+				
+				JOptionPane.showMessageDialog(null, "El valor de tu ficha es mayor al de crupier"); }
+			else {
+				juega=1;
+				JOptionPane.showMessageDialog(null, "El valor de tu ficha es menor al de crupier");
+				}
 			for(int i=0;i<bolsaFichas.getBolsaFichas().size();i++ ) {
 				panelFichas.remove(bolsaFichas.getBolsaFichas().get(i));
 				}
@@ -177,37 +227,53 @@ public class ControlDomino extends JPanel {
 			JButton pasar = new JButton("pasar");
 			pasar.addActionListener(escucha);
 			panelUsuario.add(pasar);
+			panelFichas.updateUI();
 			
 			if(juega==0) {
 				for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
 					usuarioDomino.getFichas().get(i).addMouseListener(escuchaFichas);
 					 }
-				x1=5;
-				y1=5;
-				x2=5;
-				y2=5;
-				posiciones.gridx=x1;
-				posiciones.gridy=y1;
-				panelFichas.add(plantilla1,posiciones);
-				panelFichas.setBackground(Color.LIGHT_GRAY);
-				juega=1;
+				for(int i=0;i<10;i++ ) {
+					for (int j=0; j<10;j++) {
+							posiciones.gridx=i;
+							posiciones.gridy=j;
+							panelFichas.add(new JLabel(),posiciones);
+							}
+					setPlantilla();
+					panelFichas.add(plantilla1,posiciones);
+							
+						}
+				juega=2;
 			}else {
+				
 				int aux = aleatorio.nextInt(crupierDomino.getFichas().size());
 				fichaCrupier = crupierDomino.getFichas().get(aux);
 				fichaCrupier.setImage(fichaCrupier.getImagen());
-				posiciones.gridx=x1;
-				posiciones.gridy=y1;
+				for(int i=0;i<10;i++ ) {
+					for (int j=0; j<10;j++) {
+						posiciones.gridx=i;
+						posiciones.gridy=j;
+						panelFichas.add(new JLabel(),posiciones);}
+					}
+				setPlantilla();
+				
+				panelFichas.add(fichaCrupier,posiciones);
 				condicion[0]=fichaCrupier.getValores()[0];
 				condicion[1]=fichaCrupier.getValores()[1];
-				panelFichas.add(fichaCrupier,posiciones);
-				posiciones.gridx=4;
-				posiciones.gridy=5;
+				posiciones.gridx=x2-1;
+				posiciones.gridy=y2;
 				panelFichas.add(plantilla2,posiciones);
 				posiciones.gridx=x1+1;
 				posiciones.gridy=y1;
 				panelFichas.add(plantilla1,posiciones);
-			
+				juega=3;
 				
+			}
+			
+			if(juega==3) {
+				for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
+					usuarioDomino.getFichas().get(i).addMouseListener(escuchaFichas);
+					 }
 			}
 						
 		}
@@ -260,15 +326,15 @@ public class ControlDomino extends JPanel {
 			// TODO Auto-generated method stub
 			
 			if(cambio) {
-			plantilla1.setIcon(fichaUsuario.getImagen());
-			condicion[0]=fichaUsuario.getValores()[0];
-			condicion[1]=fichaUsuario.getValores()[1];
-			//System.out.print(usuarioDomino.getFichas().toString());
-			System.out.println(usuarioDomino.getFichas().size());
-			//pintarUsuario();
-			//System.out.print(usuarioDomino.getFichas().toString());
-			System.out.println(usuarioDomino.getFichas().size());
-			}
+				if (e.getSource()==plantilla1 && cumple0 ) {
+					plantilla1.setIcon(fichaUsuario.getImagen());
+					}else if(e.getSource()==plantilla2 && cumple1)
+					{ plantilla2.setIcon(fichaUsuario.getImagen());}
+				condicion[0]=fichaUsuario.getValores()[0];
+				condicion[1]=fichaUsuario.getValores()[1];
+				plantilla1.removeMouseListener(escuchaFichas);
+				plantilla2.removeMouseListener(escuchaFichas);
+				}
 			}
 		@Override
 		public void mouseExited(MouseEvent e) {
@@ -279,19 +345,26 @@ public class ControlDomino extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			fichaUsuario = (FichasDomino)e.getSource();
+			revisarCondicion(fichaUsuario.getValores());
 			if(condicion[0] == -1 && !cambio) {
 				fichaUsuario = (FichasDomino)e.getSource();
 				cambio=true;
 				usuarioDomino.getFichas().remove(fichaUsuario);
 				panelUsuario.remove(fichaUsuario);
-				//System.out.println(usuarioDomino.getFichas().toString());
-				System.out.println(usuarioDomino.getFichas().size());
+				
 				for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
 					usuarioDomino.getFichas().get(i).removeMouseListener(escuchaFichas);
-					 }
-				System.out.println(usuarioDomino.getFichas().size());
-				}else if(condicion[0]== fichaUsuario.getValores()[0]) {
+					}
+				}else if(cumple0||cumple1){
+					fichaUsuario = (FichasDomino)e.getSource();
+					cambio=true;
+					usuarioDomino.getFichas().remove(fichaUsuario);
+					panelUsuario.remove(fichaUsuario);
+					System.out.println(usuarioDomino.getFichas().size());
+					for(int i = 0;i<usuarioDomino.getFichas().size();i++) {
+						usuarioDomino.getFichas().get(i).removeMouseListener(escuchaFichas);
+						 }
 					
 				}
 			

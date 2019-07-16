@@ -28,4 +28,6 @@ public class UsuarioDomino  {
 		fichas= ficha;
 	}
 	
+	
+	
 }

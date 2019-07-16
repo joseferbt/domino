@@ -58,6 +58,10 @@ public class FichasDomino extends JLabel{
 		return valorFicha;
 	}
 	
+	public int[] valores() {
+		int[] valores = {valorUno,valorDos};
+		return valores;
+	}
 	
 	
 }

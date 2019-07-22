@@ -28,6 +28,14 @@ public class UsuarioDomino  {
 		fichas= ficha;
 	}
 	
+	public int getDinero() {
+		return dinero;
+	}
 	
+	public void perdi() {
+		dinero = dinero-10;
+	}
+	
+
 	
 }

@@ -50,8 +50,11 @@ public class FichasDomino extends JLabel{
 		
 	}
 	
-	public ImageIcon getImagen() {
-		return imagen;
+	public ImageIcon getImagen(int n) {
+		if(n==0) {
+		return imagen;}else {
+			return imagen1;
+		}
 		
 	}
 	
@@ -64,10 +67,7 @@ public class FichasDomino extends JLabel{
 		return valores;
 	}
 	
-	public void setOtra(int n) {
-		
-	}
-	
+
 	
 }
 

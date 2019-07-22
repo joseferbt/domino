@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class ControlDomino extends JPanel {
 	private int juega, x1, y1,x2,y2,cualCondicion, contador;
 	private boolean cambio=false, cumple0,cumple1,perdio;
 	private int[] condicion;
+	private int[][] tablero;
 	private Random aleatorio;
 	private BolsaFichas bolsaFichas;
 	private UsuarioDomino usuarioDomino;
@@ -39,7 +41,7 @@ public class ControlDomino extends JPanel {
 	private Escuchas escucha;
 	private EscuchaFichas escuchaFichas;
 	private JPanel panelControl,panelFichas,panelCrupier,panelUsuario;
-	private FichasDomino plantilla1, plantilla2, fichaUsuario,fichaCrupier;
+	private FichasDomino  fichaUsuario,fichaCrupier;
 	private GridBagConstraints posiciones1 = new GridBagConstraints();
 	private GridBagConstraints posiciones2 = new GridBagConstraints();
 	public ControlDomino() {
@@ -57,13 +59,7 @@ public class ControlDomino extends JPanel {
 		condicion = new int [2];
 		condicion[1]=-1;
 		condicion[0]=-1;
-		
-		plantilla1 = new FichasDomino(21,20);
-		plantilla1.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
-		plantilla1.addMouseListener(escuchaFichas);
-		plantilla2 = new FichasDomino(21,20);
-		plantilla2.setIcon(new ImageIcon("src/imagenes/panel.jpg"));
-		plantilla2.addMouseListener(escuchaFichas);
+		tablero = new int [9][9];
 		
 		this.setLayout(new BorderLayout());
 		crupierDomino = new CrupierDomino(1000);
@@ -146,21 +142,51 @@ public class ControlDomino extends JPanel {
 	
 	
 	public void setPlantilla() {
-		x1=5;y1=5;x2=5;y2=5;
-		for(int i=0;i<10;i++) {
-			for(int j=0;j<10;j++) {
-				if (panelFichas.getComponentAt(new Point(i,j))!= new JLabel()) {
-					if (x1!= 0) {
-						x1=i; y1=j;
-						}
-					if (x2!=10) {
-						x2=i;
-						y2=j;
+		x1=4;y1=4;x2=4;y2=4;
+		for(int i=0;i<=4;i++) {
+			for(int j=0;j<9;j++) { 
+				if (tablero[j][i]==1) {
+					System.out.println("componentes "+j+"  "+i);
+					System.out.println(x1 +" "+y1 );
+					if (j>0 && i%2!=0) {
+						System.out.print("[1]");
+						x1=j-1; y1=i;
+						break;
+						}else if (j<9 && i%2==0) {
+							System.out.print("[2]");
+							x1=j+1;	y1=i;
+							break;
+						}else if (j==0||j==9){
+							System.out.print("[3]");
+							y1= i-1; x1=j;
+							break;
 						}
 					}
 				}
 			}
-			
+		for(int i=4;i<9;i++){
+			int j;
+			if (i==4 ) {
+				j=4;
+				}else {j=0;}
+			for(;j<9;j++) {
+				if (tablero[j][i]==1) {
+					if (j>0 && i%2!=0) {
+						x2=j+1; y2=i;
+						break;
+						}else if (j<9 && i%2==0) {
+							x2=j-1;	y2=i;
+							break;
+						}else if (j==0||j==9){
+							y2= i+1; x2=j;
+							break;
+						}
+					}
+				}
+			}
+		imprimir();
+			System.out.println("posiciones1 ="+ x1+ " y " +y1);
+			System.out.println("posiciones2 ="+ x2+ " y " +y2);
 		posiciones1.gridx=x1;
 		posiciones1.gridy=y1;
 		posiciones2.gridx=x2;
@@ -210,6 +236,16 @@ public class ControlDomino extends JPanel {
 		return true;
 	}
 	
+	public void imprimir() {
+		for(int i=0;i<9;i++) {
+			
+			for(int j=0;j<9;j++) {
+				System.out.print(tablero[i][j] +" ");
+			}
+			System.out.println("");
+		}
+	}
+	
 	public void pasar(UsuarioDomino usuario) {
 		System.out.println(puedo());
 			while (puedo()){
@@ -217,6 +253,7 @@ public class ControlDomino extends JPanel {
 				int index = aleatorio.nextInt(getArrayFichas().size());
 				FichasDomino aux =getArrayFichas().get(index);
 				getArrayFichas().remove(index);
+				aux.addMouseListener(escuchaFichas);
 				usuario.getFichas().add(aux);
 				panelUsuario.updateUI();
 			}
@@ -226,20 +263,22 @@ public class ControlDomino extends JPanel {
 		case 0:
 			System.out.println("usuario");
 			System.out.print(condicion[0]+" y "+condicion[1]);
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					tablero[i][j]=0;
 					posiciones1.gridx = i;
 					posiciones1.gridy = j;
 					panelFichas.add(new JLabel(), posiciones1);
 				}
 				setPlantilla();
-				panelFichas.add(plantilla1, posiciones1);
+				tablero[x1][y1]=1;
 				}
 			break;
 		case 1:
 			System.out.println("crupier");
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					tablero[i][j]=0;
 					posiciones1.gridx = i;
 					posiciones1.gridy = j;
 					panelFichas.add(new JLabel(), posiciones1);
@@ -248,21 +287,17 @@ public class ControlDomino extends JPanel {
 			setPlantilla();
 			fichaCrupier= ponerFicha();
 			panelFichas.add(fichaCrupier, posiciones1);
-			x2= x2+1;
-			x1=x1-1;
-			posiciones2.gridx = x2 ;
-			posiciones2.gridy = y2;
-			panelFichas.add(plantilla2, posiciones2);
-			posiciones1.gridx = x1 ;
-			posiciones1.gridy = y1;
-			panelFichas.add(plantilla1, posiciones1);
+			tablero[x1][y1]=1;
+			
+			System.out.println(x1+" y "+ y1 +" asd "+x2+" y "+y2);
+			
 			juega = 0;
 			System.out.println(condicion[0]+" y "+ condicion[1]);
 			break;
 			}
 		
 	}
-	class Escuchas implements MouseListener, ActionListener{
+	class Escuchas extends MouseAdapter implements ActionListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -312,31 +347,8 @@ public class ControlDomino extends JPanel {
 			}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void actionPerformed(ActionEvent arg0) {
 
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(getArrayFichas().size()>0 && juega==0) {
 				pasar(usuarioDomino);
@@ -345,56 +357,19 @@ public class ControlDomino extends JPanel {
 			}
 		}
 
-	private class EscuchaFichas implements MouseListener{
+		
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		} 
+	private class EscuchaFichas extends MouseAdapter{
+
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
-			if(cambio&&juega==0&&(e.getSource()==plantilla1||e.getSource()==plantilla2)) {
-				System.out.println("llego");
-				revisarCondicion(fichaUsuario.getValores());
-				if(condicion[0]==-1) {
-					condicion[0]=fichaUsuario.getValores()[0];
-					condicion[1]=fichaUsuario.getValores()[1];
-					plantilla1.setIcon(fichaUsuario.getImagen(0));
-				}else if (e.getSource()==plantilla1 && cumple0 ) {
-					if (condicion[0]== fichaUsuario.getValores()[0]) {
-						plantilla1.setIcon(fichaUsuario.getImagen(1));
-						condicion[0]= fichaUsuario.getValores()[1];
-					}else {
-					plantilla1.setIcon(fichaUsuario.getImagen(0));
-					condicion[0]= fichaUsuario.getValores()[0];}
-					}else if(e.getSource()==plantilla2 && cumple1){
-						if (condicion[1]==fichaUsuario.getValores()[1]) {
-							plantilla2.setIcon(fichaUsuario.getImagen(1));
-							condicion[1]=fichaUsuario.getValores()[0];
-						}else {
-						plantilla2.setIcon(fichaUsuario.getImagen(0));
-						condicion[1]=fichaUsuario.getValores()[1];}
-						}
-				System.out.println(condicion[0]+" "+condicion[1]);
-				juega=1;
-				//panelFichas.add(ponerFicha(),posiciones);
-				panelFichas.updateUI();
-				panelUsuario.updateUI();
-				
-				}
+		
 		
 			}
 		
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
@@ -407,15 +382,48 @@ public class ControlDomino extends JPanel {
 				cambio=true;
 				usuarioDomino.getFichas().remove(fichaUsuario);
 				panelUsuario.remove(fichaUsuario);
-			}	}
+			}	
+			setPlantilla();
+			if(cambio&&juega==0) {
+				revisarCondicion(fichaUsuario.getValores());
+				if(condicion[0]==-1) {
+					condicion[0]=fichaUsuario.getValores()[0];
+					condicion[1]=fichaUsuario.getValores()[1];
+					fichaUsuario.setIcon(fichaUsuario.getImagen(0));
+					panelFichas.add(fichaUsuario,posiciones2);
+					tablero[x2][y2]=1;
+				}else if (cumple0 ) {
+					if (condicion[0]== fichaUsuario.getValores()[0]) {
+						fichaUsuario.setIcon(fichaUsuario.getImagen(1));
+						condicion[0]= fichaUsuario.getValores()[1];
+						panelFichas.add(fichaUsuario,posiciones2);
+						tablero[x2][y2]=1;
+					}else {
+					condicion[0]= fichaUsuario.getValores()[0];
+					panelFichas.add(fichaUsuario,posiciones2);
+					tablero[x2][y2]=1;}
+					}else if (cumple1){
+						if (condicion[1]==fichaUsuario.getValores()[1]) {
+							fichaUsuario.setIcon(fichaUsuario.getImagen(1));
+							condicion[1]=fichaUsuario.getValores()[0];
+							panelFichas.add(fichaUsuario,posiciones1);
+							tablero[x1][y1]=1;
+						}else {
+						condicion[1]=fichaUsuario.getValores()[1];
+						panelFichas.add(fichaUsuario,posiciones1);
+						tablero[x1][y1]=1;}
+						}
+				imprimir();
+				System.out.println(condicion[0]+" "+condicion[1]);
+				juega=1;
+				
+				
+				//panelFichas.add(ponerFicha(),posiciones);
+				panelFichas.updateUI();
+				panelUsuario.updateUI();
+				
+				}
 			}
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
-
-	
+	}
 }
